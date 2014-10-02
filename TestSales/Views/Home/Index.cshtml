@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<div id="Sales"></div>
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+    function GetSales(YEAR) {
+        var params = { Year: YEAR };
+        $.ajax({
+            url: '/Webservices/SalesInformation.asmx/GetSalesByYear',
+            type: "GET",
+            data: params,
+            dataType: "JSON",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                var obj = JSON.parse(data.d);
+                BuildTable(obj);
+            },
+            error: function (ex) {
+                console.log(ex);
+            }
+        });
+    }
+
+    function BuildTable(Data) {
+        var t = "<table>";
+        t += "<tr>";
+        t += "<th> SalesPerson </th>";
+        t += "<th> Jan </th>";
+        t += "<th> Feb </th>";
+        t += "<th> Mar </th>";
+        t += "<th> Apr </th>";
+        t += "<th> May </th>";
+        t += "<th> Jun </th>";
+        t += "<th> Jul </th>";
+        t += "<th> Aug </th>";
+        t += "<th> Sep </th>";
+        t += "<th> Oct </th>";
+        t += "<th> Nov </th>";
+        t += "<th> Dec </th>";
+        t += "</tr>";
+
+        for (var i = 0; i < Data.length ; i++) {
+            t += "<tr>";
+            t += "<td>" + Data[i].Name + " " + Data[i].LastName + "</td>";
+            t += "<td>" + Data[i].sales.Jan + "</td>";
+            t += "<td>" + Data[i].sales.Feb + "</td>";
+            t += "<td>" + Data[i].sales.Mar + "</td>";
+            t += "<td>" + Data[i].sales.Apr + "</td>";
+            t += "<td>" + Data[i].sales.May + "</td>";
+            t += "<td>" + Data[i].sales.Jun + "</td>";
+            t += "<td>" + Data[i].sales.Jul + "</td>";
+            t += "<td>" + Data[i].sales.Aug + "</td>";
+            t += "<td>" + Data[i].sales.Sep + "</td>";
+            t += "<td>" + Data[i].sales.Oct + "</td>";
+            t += "<td>" + Data[i].sales.Nov + "</td>";
+            t += "<td>" + Data[i].sales.Dec + "</td>";
+            t += "</tr>";
+        }
+
+        t += "</table>";
+        $("#Sales").html(t);
+    }
+
+    GetSales(2013);
+
+</script>
